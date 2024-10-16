@@ -141,58 +141,43 @@ public class cadastroVIEW extends javax.swing.JFrame {
     }//GEN-LAST:event_cadastroNomeActionPerformed
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
+    try {
+        // Cria o objeto ProdutosDTO
         ProdutosDTO produto = new ProdutosDTO();
         String nome = cadastroNome.getText();
         String valor = cadastroValor.getText();
         String status = "A Venda";
+        
+        // Verifica se os campos estão preenchidos
+        if(nome.isEmpty() || valor.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Por favor, preencha todos os campos!", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        // Atribui os valores ao objeto produto
         produto.setNome(nome);
-        produto.setValor(Integer.parseInt(valor));
+        produto.setValor(Integer.parseInt(valor)); // Supondo que o valor seja um número inteiro
         produto.setStatus(status);
         
+        // Instancia o DAO e realiza o cadastro
         ProdutosDAO produtodao = new ProdutosDAO();
-        produtodao.cadastrarProduto(produto);
+        boolean sucesso = produtodao.cadastrarProduto(produto);
         
-    }//GEN-LAST:event_btnCadastrarActionPerformed
-
-    private void btnProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProdutosActionPerformed
-        listagemVIEW listagem = new listagemVIEW(); 
-        listagem.setVisible(true);
-    }//GEN-LAST:event_btnProdutosActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(cadastroVIEW.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(cadastroVIEW.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(cadastroVIEW.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(cadastroVIEW.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        // Exibe mensagem de sucesso ou erro
+        if(sucesso) {
+            JOptionPane.showMessageDialog(null, "Produto cadastrado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+            // Limpar os campos após cadastro bem-sucedido
+            cadastroNome.setText("");
+            cadastroValor.setText("");
+        } else {
+            JOptionPane.showMessageDialog(null, "Erro ao cadastrar o produto!", "Erro", JOptionPane.ERROR_MESSAGE);
         }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new cadastroVIEW().setVisible(true);
-            }
-        });
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(null, "O valor do produto deve ser um número!", "Erro", JOptionPane.ERROR_MESSAGE);
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Ocorreu um erro: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
     }
+}//GEN-LAST:event_btnCadastrarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCadastrar;
