@@ -4,6 +4,9 @@
  */
 package projetoleilao;
 
+import java.awt.HeadlessException;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Beto
@@ -174,7 +177,7 @@ public class cadastroVIEW extends javax.swing.JFrame {
         }
     } catch (NumberFormatException e) {
         JOptionPane.showMessageDialog(null, "O valor do produto deve ser um número!", "Erro", JOptionPane.ERROR_MESSAGE);
-    } catch (Exception e) {
+    } catch (HeadlessException e) {
         JOptionPane.showMessageDialog(null, "Ocorreu um erro: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
     }
 }//GEN-LAST:event_btnCadastrarActionPerformed
