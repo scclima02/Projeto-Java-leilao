@@ -29,10 +29,12 @@ public class ProdutosDTO {
     public String getStatus() {
         return status;
     }
+    
 
     public void setId(Integer id) {
         this.id = id;
     }
+    
 
     public void setNome(String nome) {
         this.nome = nome;
