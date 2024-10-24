@@ -9,6 +9,7 @@ package projetoleilao;
  * @author Beto
  */
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class listagemVIEW extends javax.swing.JFrame {
@@ -135,19 +136,27 @@ public class listagemVIEW extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderActionPerformed
-        String id = id_produto_venda.getText();
-        
+    private void btnVenderActionPerformed(java.awt.event.ActionEvent evt) {                                          
+    String id = id_produto_venda.getText(); // Obtém o ID do produto a ser vendido
+    
+    try {
         ProdutosDAO produtosdao = new ProdutosDAO();
         
-        //produtosdao.venderProduto(Integer.parseInt(id));
-        listarProdutos();
-    }//GEN-LAST:event_btnVenderActionPerformed
+        // Converte o ID para inteiro e chama o método para vender o produto
+        produtosdao.venderProduto(Integer.parseInt(id)); 
+        listarProdutos(); // Atualiza a lista de produtos na tela após a venda
+        
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(null, "Por favor, insira um ID válido.");
+    }
+}
 
-    private void btnVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVendasActionPerformed
-        //vendasVIEW vendas = new vendasVIEW(); 
-        //vendas.setVisible(true);
-    }//GEN-LAST:event_btnVendasActionPerformed
+
+    private void btnVendasActionPerformed(java.awt.event.ActionEvent evt) {                                          
+    vendasVIEW vendas = new vendasVIEW();
+    vendas.setVisible(true);  // Exibe a tela de vendas
+}
+
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
         this.dispose();

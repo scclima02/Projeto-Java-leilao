@@ -57,37 +57,47 @@ public class ProdutosDAO {
    
     
     // Método para listar os produtos cadastrados no banco de dados
-    public ArrayList<ProdutosDTO> listarProdutos() {
-        ArrayList<ProdutosDTO> listagem = new ArrayList<>();
-        String sql = "SELECT * FROM produtos"; // Supondo que a tabela se chama 'produtos'
+    public ArrayList<ProdutosDTO> listarProdutosVendidos() {
+    // SQL para buscar todos os produtos com status 'Vendido'
+    String sql = "SELECT * FROM produtos WHERE status = 'Vendido'";
+    
+    // Inicia a conexão com o banco de dados
+    conn = new conectaDAO().connectDB();
+    
+    ArrayList<ProdutosDTO> listagemVendidos = new ArrayList<>();
+    
+    try {
+        // Prepara e executa a consulta SQL
+        prep = conn.prepareStatement(sql);
+        resultset = prep.executeQuery();
         
-        conn = new conectaDAO().connectDB();
-        
-        try {
-            prep = conn.prepareStatement(sql);
-            resultset = prep.executeQuery();
+        // Loop para obter os dados dos produtos vendidos
+        while (resultset.next()) {
+            ProdutosDTO produto = new ProdutosDTO();
+            produto.setId(resultset.getInt("id"));
+            produto.setNome(resultset.getString("nome"));
+            produto.setValor(resultset.getInt("valor"));
+            produto.setStatus(resultset.getString("status"));
             
-            while (resultset.next()) {
-                ProdutosDTO produto = new ProdutosDTO();
-                produto.setId(resultset.getInt("id"));
-                produto.setNome(resultset.getString("nome"));
-                produto.setValor(resultset.getInt("valor"));
-                produto.setStatus(resultset.getString("status"));
-                
-                listagem.add(produto);
-            }
-        } catch (SQLException erro) {
-            JOptionPane.showMessageDialog(null, "Erro ao listar produtos: " + erro.getMessage());
-        } finally {
-            try {
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, "Erro ao fechar conexão: " + e.getMessage());
-            }
+            // Adiciona o produto na lista de produtos vendidos
+            listagemVendidos.add(produto);
         }
         
-        return listagem;
+    } catch (SQLException erro) {
+        JOptionPane.showMessageDialog(null, "Erro ao listar produtos vendidos: " + erro.getMessage());
+    } finally {
+        try {
+            // Fecha a conexão
+            if (conn != null) conn.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao fechar conexão: " + e.getMessage());
+        }
     }
+    
+    // Retorna a lista de produtos vendidos
+    return listagemVendidos;
+}
+
 
     // Método para vender um produto (altera o status do produto para 'Vendido')
     public void venderProduto(int id) {
@@ -123,5 +133,9 @@ public class ProdutosDAO {
         }
     }
 }
+
+    ArrayList<ProdutosDTO> listarProdutos() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 
 }
