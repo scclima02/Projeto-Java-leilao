@@ -138,13 +138,13 @@ public class listagemVIEW extends javax.swing.JFrame {
 
     private void btnVenderActionPerformed(java.awt.event.ActionEvent evt) {                                         
     // Obter o índice da linha selecionada
-    int linhaSelecionada = tabelaProdutos.getSelectedRow();
+    int linhaSelecionada = ProdutosDAO.getSelectedRow();
     
     if (linhaSelecionada == -1) {
         JOptionPane.showMessageDialog(null, "Por favor, selecione um produto para vender.");
     } else {
         // Pega o ID do produto selecionado
-        int idProduto = (int) tabelaProdutos.getValueAt(linhaSelecionada, 0); // Assumindo que a primeira coluna seja o ID
+        var idProduto = (int) ProdutosDAO.getValueAt(linhaSelecionada, 0); // Assumindo que a primeira coluna seja o ID
         
         // Confirmar a operação
         int confirmacao = JOptionPane.showConfirmDialog(null, "Deseja vender o produto selecionado?", "Confirmação", JOptionPane.YES_NO_OPTION);
@@ -169,10 +169,12 @@ public class listagemVIEW extends javax.swing.JFrame {
 
 
 
-    private void btnVendasActionPerformed(java.awt.event.ActionEvent evt) {                                          
-    vendasVIEW vendas = new vendasVIEW();
-    vendas.setVisible(true);  // Exibe a tela de vendas
+    private void btnVendasActionPerformed(java.awt.event.ActionEvent evt) {                                         
+    vendasVIEW vendas = new vendasVIEW();  // Instancia a nova tela
+    vendas.setVisible(true);               // Torna a nova tela visível
+    this.dispose();                        // Fecha a tela atual de listagem (opcional)
 }
+
 
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed

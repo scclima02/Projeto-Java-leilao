@@ -18,6 +18,10 @@ import javax.swing.JOptionPane;
 
 public class ProdutosDAO {
 
+    static int getSelectedRow() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
     Connection conn;
     PreparedStatement prep;
     ResultSet resultset;
