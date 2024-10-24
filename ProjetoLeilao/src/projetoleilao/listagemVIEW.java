@@ -9,6 +9,7 @@ package projetoleilao;
  * @author Beto
  */
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class listagemVIEW extends javax.swing.JFrame {
@@ -135,19 +136,46 @@ public class listagemVIEW extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderActionPerformed
-        String id = id_produto_venda.getText();
+    private void btnVenderActionPerformed(java.awt.event.ActionEvent evt) {                                         
+    // Obter o índice da linha selecionada
+    int linhaSelecionada = ProdutosDAO.getSelectedRow();
+    
+    if (linhaSelecionada == -1) {
+        JOptionPane.showMessageDialog(null, "Por favor, selecione um produto para vender.");
+    } else {
+        // Pega o ID do produto selecionado
+        var idProduto = (int) ProdutosDAO.getValueAt(linhaSelecionada, 0); // Assumindo que a primeira coluna seja o ID
         
-        ProdutosDAO produtosdao = new ProdutosDAO();
+        // Confirmar a operação
+        int confirmacao = JOptionPane.showConfirmDialog(null, "Deseja vender o produto selecionado?", "Confirmação", JOptionPane.YES_NO_OPTION);
         
-        //produtosdao.venderProduto(Integer.parseInt(id));
-        listarProdutos();
-    }//GEN-LAST:event_btnVenderActionPerformed
+        if (confirmacao == JOptionPane.YES_OPTION) {
+            // Instanciar o DAO e realizar a venda
+            try {
+                ProdutosDAO produtosDAO = new ProdutosDAO();
+                produtosDAO.venderProduto(idProduto);  // Chama o método para alterar o status para "Vendido"
+                
+                JOptionPane.showMessageDialog(null, "Produto vendido com sucesso!");
+                
+                // Atualiza a tabela após a venda
+                listarProdutos();
+                
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Erro ao vender o produto: " + e.getMessage());
+            }
+        }
+    }
+}
 
-    private void btnVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVendasActionPerformed
-        //vendasVIEW vendas = new vendasVIEW(); 
-        //vendas.setVisible(true);
-    }//GEN-LAST:event_btnVendasActionPerformed
+
+
+    private void btnVendasActionPerformed(java.awt.event.ActionEvent evt) {                                         
+    vendasVIEW vendas = new vendasVIEW();  // Instancia a nova tela
+    vendas.setVisible(true);               // Torna a nova tela visível
+    this.dispose();                        // Fecha a tela atual de listagem (opcional)
+}
+
+
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
         this.dispose();
@@ -188,7 +216,7 @@ public class listagemVIEW extends javax.swing.JFrame {
         });
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
+    
     private javax.swing.JButton btnVendas;
     private javax.swing.JButton btnVender;
     private javax.swing.JButton btnVoltar;
@@ -199,7 +227,7 @@ public class listagemVIEW extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable listaProdutos;
-    // End of variables declaration//GEN-END:variables
+    
 
     
     private void listarProdutos(){
