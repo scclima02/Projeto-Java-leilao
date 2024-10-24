@@ -91,24 +91,37 @@ public class ProdutosDAO {
 
     // Método para vender um produto (altera o status do produto para 'Vendido')
     public void venderProduto(int id) {
-        String sql = "UPDATE produtos SET status = 'Vendido' WHERE id = ?";
+    // SQL para alterar o status do produto para "Vendido" com base no ID
+    String sql = "UPDATE produtos SET status = 'Vendido' WHERE id = ?";
+    
+    // Inicia a conexão com o banco de dados
+    conn = new conectaDAO().connectDB();
+    
+    try {
+        // Prepara a instrução SQL
+        prep = conn.prepareStatement(sql);
+        prep.setInt(1, id); // Define o valor do parâmetro ID
+
+        // Executa a atualização
+        int rowsAffected = prep.executeUpdate();
         
-        conn = new conectaDAO().connectDB();
-        
-        try {
-            prep = conn.prepareStatement(sql);
-            prep.setInt(1, id);
-            prep.executeUpdate();
-            
+        // Verifica se algum registro foi atualizado
+        if (rowsAffected > 0) {
             JOptionPane.showMessageDialog(null, "Produto vendido com sucesso!");
-        } catch (SQLException erro) {
-            JOptionPane.showMessageDialog(null, "Erro ao vender produto: " + erro.getMessage());
-        } finally {
-            try {
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, "Erro ao fechar conexão: " + e.getMessage());
-            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Produto com ID " + id + " não encontrado.");
+        }
+        
+    } catch (SQLException erro) {
+        JOptionPane.showMessageDialog(null, "Erro ao vender produto: " + erro.getMessage());
+    } finally {
+        try {
+            // Fecha a conexão
+            if (conn != null) conn.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao fechar conexão: " + e.getMessage());
         }
     }
+}
+
 }
